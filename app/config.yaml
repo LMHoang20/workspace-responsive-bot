@@ -1,0 +1,53 @@
+TOPIC_ID: workspace-topic
+SUBSCRIPTION_ID: workspace-subscription
+SUBSCRIPTION_TYPE: pull
+USING_MODEL: openai
+
+EVENT_TYPES: 
+  - google.workspace.chat.message.v1.created
+SCOPES:
+  - https://www.googleapis.com/auth/chat.spaces
+  - https://www.googleapis.com/auth/chat.messages
+
+SERVICE_ACCOUNT_FILE: secret/service_account.json
+CLIENT_SECRETS_FILE: secret/client_secrets.json
+TOKEN_FILE: secret/token
+
+SUPPORTED_LANGUAGES:
+  vi: Vietnamese
+  en: English
+
+DEFAULT:
+  source: vi
+  target: en
+
+OPEN_MODELS:
+  default:
+    name: facebook/mbart-large-50-many-to-many-mmt
+    template: "{language} {text}"
+  vi-en:
+    name: VietAI/envit5-translation
+    template: "{language}: {text}"
+  en-vi:
+    name: VietAI/envit5-translation
+    template: "{language}: {text}"
+
+CLOSE_MODELS:
+  openai:
+    template: |
+      System:
+      - You are a translating bot in Google Chat.
+      - The text can have special formatting, emojis, attachment, etc., so try to preserve them as much as possible.
+      - So do NOT translate names, id, tags, or anything that is not a regular text according to Google message structure.
+      - Answer with only the translated text and nothing else.
+      
+      User:
+      Translate from {src} to {dst}:
+      {text}
+    config:
+      model: gpt-4o-mini
+      model_provider: openai
+      temperature: 1.0
+
+    
+
