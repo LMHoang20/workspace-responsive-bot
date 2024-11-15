@@ -30,11 +30,10 @@ class Workspace(Service):
         except HttpError as e:
             if e.reason != 'Subscription associated with the resource already exists.':
                 raise e
-            response = self.renew(e.error_details[0]['metadata']['current_subscription'])
-            subscription_name = response['response']['name']
-            print(f'Renew to {space_id}: {subscription_name}')
-            return subscription_name
-    
+            current_subscription = e.error_details[0]['metadata']['current_subscription']
+            self.unlisten(current_subscription)
+            return self.listen(space_id, event_types, topic_id)
+
     def renew(self, subscription_id) -> HttpRequest:
         return self.client.subscriptions().patch(
             name=subscription_id,

@@ -30,9 +30,6 @@ def main():
     publisher = get_publisher(TOPIC_ID, EVENT_TYPES)
 
     handler = EventHandler(translator, publisher, subscriber)
-
-    print(translator, subscriber, publisher, handler)
-
     publisher.start()
     subscriber.start(lambda message: callback(message, handler))
 
