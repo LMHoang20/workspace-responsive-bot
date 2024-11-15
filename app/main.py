@@ -4,7 +4,7 @@ from app.pubsub.publishers import get_publisher
 from app.pubsub.subscribers import get_subscriber
 from app.translator.translators import get_translator
 
-from app.config import *
+from app.config import USING_MODEL, SUBSCRIPTION_TYPE, SUBSCRIPTION_ID, TOPIC_ID, EVENT_TYPES
 from app.handler import EventHandler
 from app.utility import synchronized
 
